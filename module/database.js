@@ -21,6 +21,8 @@ export class ClockDatabase extends Collection {
         const clocks = this.#getClockData();
         const newData = { ...DEFAULT_CLOCK, ...data };
         newData.id ??= foundry.utils.randomID();
+        // set max to length of name for Word
+        if (data.type == "word") newData.max = newData.name.length;
         clocks[newData.id] = newData;
         game.settings.set("global-progress-clocks", "activeClocks", clocks);
     }
@@ -32,6 +34,7 @@ export class ClockDatabase extends Collection {
     }
 
     async update(data) {
+        console.log(data);
         if (!this.#verifyClockData(data)) return;
 
         const clocks = this.#getClockData();
@@ -40,6 +43,11 @@ export class ClockDatabase extends Collection {
 
         const newData = foundry.utils.mergeObject(foundry.utils.duplicate(existing), data);
         const newValue = Math.clamp(newData.value, 0, newData.max);
+        //console.log(newData, newValue);
+        
+        // set max to length of name for Word
+        if (data.type == "word") newData.max = newData.name.length;
+        
         if (game.user.hasPermission('SETTINGS_MODIFY')) {
             Object.assign(existing, newData);
             existing.value = newValue;
@@ -108,7 +116,6 @@ export class ClockDatabase extends Collection {
             ui.notifications.error(game.i18n.format("GlobalProgressClocks.SizeTooBigError", { maxSize }));
             return false;
         }
-        
         return true;
     }
 }

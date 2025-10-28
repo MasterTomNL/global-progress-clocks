@@ -29,6 +29,7 @@ export class ClockPanel extends fapi.HandlebarsApplicationMixin(fapi.Application
         actions: {
             addClock: ClockPanel.#onAddClock,
             addPoints: ClockPanel.#onAddPoints,
+            addWord: ClockPanel.#onAddWord,
             editEntry: ClockPanel.#onEditEntry,
             deleteEntry: ClockPanel.#onDeleteEntry,
         },
@@ -50,6 +51,7 @@ export class ClockPanel extends fapi.HandlebarsApplicationMixin(fapi.Application
         const location = game.settings.get(MODULE_ID, "location");
         return location === "topRight" ? "top" : "bottom";
     }
+    
 
     async _prepareContext() {
         const clocks = await this.prepareClocks();
@@ -114,12 +116,11 @@ export class ClockPanel extends fapi.HandlebarsApplicationMixin(fapi.Application
         // Update the last rendered list (to get ready for next cycle)
         this.lastRendered = rendered;
 
-        for (const clock of html.querySelectorAll(".clock-entry.editable :where(.clock, .points)")) {
+        for (const clock of html.querySelectorAll(".clock-entry.editable :where(.clock, .points, .word .inner)")) {
             clock.addEventListener("click", (event) => {
                 const clockId = event.target.closest("[data-id]").dataset.id;
                 const clock = this.db.get(clockId);
                 if (!clock) return;
-
                 clock.value = clock.value >= clock.max ? 0 : clock.value + 1;
                 this.db.update(clock);
             });
@@ -128,10 +129,16 @@ export class ClockPanel extends fapi.HandlebarsApplicationMixin(fapi.Application
                 const clockId = event.target.closest("[data-id]").dataset.id;
                 const clock = this.db.get(clockId);
                 if (!clock) return;
-
                 clock.value = clock.value <= 0 ? clock.max : clock.value - 1;
                 this.db.update(clock);
             });
+        }
+
+        for (const word of html.querySelectorAll(".clock-entry .word .inner")) {
+            const clockId = word.closest("[data-id]").dataset.id;
+            const clock = this.db.get(clockId);
+            if (!clock) return;
+            word.innerHTML = `<span class="highlighted">${clock.name.substring(0, clock.value)}</span>${clock.name.substring(clock.value)}`;
         }
 
         // Drag/drop reordering, make sure an item exists first
@@ -164,6 +171,13 @@ export class ClockPanel extends fapi.HandlebarsApplicationMixin(fapi.Application
     static #onAddPoints() {
         new ClockAddDialog({
             type: "points",
+            complete: (data) => this.db.addClock(data),
+        }).render({ force: true });
+    }
+
+    static #onAddWord() {
+        new ClockAddDialog({
+            type: "word",
             complete: (data) => this.db.addClock(data),
         }).render({ force: true });
     }

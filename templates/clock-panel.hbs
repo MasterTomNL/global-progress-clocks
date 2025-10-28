@@ -7,12 +7,16 @@
             {{#each clocks as |clock|}}
                 <div class="clock-entry ui-control {{#if clock.editable}}editable{{/if}} {{#if clock.private}}private{{/if}} {{#unless clock.visible}}hidden{{/unless}}" data-id="{{clock.id}}">
                     <div class="name">
-                        <span class="value">{{#if clock.private}}<i class="fas fa-eye-slash"></i> {{/if}}{{clock.name}}</span>
+                        <span class="value {{#if (eq clock.type "word")}}word{{/if}}">
+                          {{#if clock.private}}<i class="fas fa-eye-slash"></i> {{/if}}
+                          <span class="inner">{{clock.name}}</span></span>
                         {{#if @root.options.editable}}
                             <div class="controls">
                                 <a data-action="deleteEntry"><i class="fa-solid fa-fw fa-trash"></i></a>
                                 <a data-action="editEntry"><i class="fa-solid fa-fw fa-edit"></i></a>
-                                <span class="value">{{#if clock.private}}<i class="fas fa-eye-slash"></i> {{/if}}{{clock.name}}</span>
+                                <span class="value {{#if (eq clock.type "word")}}word{{/if}}">
+                                  {{#if clock.private}}<i class="fas fa-eye-slash"></i> {{/if}}
+                                  <span class="inner">{{clock.name}}</span></span>
                             </div>
                         {{/if}}
                     </div>
@@ -20,7 +24,8 @@
                         <div class="points">
                             {{clock.value}}
                         </div>
-                    {{else}}
+                    {{/if}}
+                    {{#if (eq clock.type "clock")}}
                         <div class="clock" style="--areas: {{clock.max}}; --filled: {{clock.value}}; --clock-color: {{clock.color}}; --background: {{clock.backgroundColor}}">
                             {{#each clock.spokes}}
                                 <div class="spoke" style="--index: {{ this }}"></div>
@@ -35,10 +40,13 @@
         <div class="main-controls">
             <button class="ui-control" data-action="addPoints">
                 <i class="fas fa-plus"></i> {{localize "GlobalProgressClocks.Add.Points"}}
-            </a>
+            </button>
             <button class="ui-control" data-action="addClock">
                 <i class="fas fa-plus"></i> {{localize "GlobalProgressClocks.Add.Clock"}}
-            </a>
+            </button>
+            <button class="ui-control" data-action="addWord">
+                <i class="fas fa-plus"></i> {{localize "GlobalProgressClocks.Add.Word"}}
+            </button>
         </div>
     {{/if}}
 </section>

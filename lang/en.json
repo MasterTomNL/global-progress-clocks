@@ -2,7 +2,8 @@
     "GlobalProgressClocks": {
         "Add": {
             "Clock": "Clock",
-            "Points": "Points"
+            "Points": "Points",
+            "Word": "Word"
         },
         "CreateDialog": {
             "Color": "Color",

@@ -242,6 +242,10 @@ body:has(#effects-panel .effect-item) #clock-panel {
 
         z-index: 1;
     }
+    
+    .word .highlighted {
+        color: #ff0000;
+    }
 
     .clock {
         width: var(--entry-height);
