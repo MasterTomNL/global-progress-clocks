@@ -73,7 +73,7 @@ export class ClockAddDialog extends fapi.HandlebarsApplicationMixin(fapi.Applica
 
         const data = formData.object;
         data.type ??= this.type;
-        data.max = this.type === "points" ? 99 : Math.max(data.max, 1);
+        data.max = this.type === "points" ? 99 : (this.type == "word" ? data.name.length : Math.max(data.max, 1));
         if (this.entry) {
             data.id = this.entry.id;
             data.value = Math.clamp(data.value, 0, data.max);

@@ -6,14 +6,12 @@
                 <input type="text" name="name" value="{{entry.name}}" {{#unless clock}}autofocus{{/unless}} />
             </div>
         </div>
-        {{#if (or (eq type "clock") (eq type "points"))}}
-            <div class="form-group">
-                <label>{{localize "GlobalProgressClocks.CreateDialog.Value"}}</label>
-                <div class="form-fields">
-                    <input type="number" name="value" value="{{entry.value}}" autofocus />
-                </div>
+        <div class="form-group">
+            <label>{{localize "GlobalProgressClocks.CreateDialog.Value"}}</label>
+            <div class="form-fields">
+                <input type="number" name="value" value="{{entry.value}}" autofocus />
             </div>
-        {{/if}}
+        </div>
         {{#if (eq type "clock")}}
             <div class="form-group">
                 <label>{{localize "GlobalProgressClocks.CreateDialog.Size"}}</label>
