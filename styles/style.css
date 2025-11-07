@@ -244,7 +244,7 @@ body:has(#effects-panel .effect-item) #clock-panel {
     }
     
     .word .highlighted {
-        color: #ff0000;
+        color: var(--clock-color);
     }
 
     .clock {
