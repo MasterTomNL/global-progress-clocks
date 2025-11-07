@@ -4,10 +4,8 @@
   "description": "Blades in the Dark style progress clocks that show on the sidebar",
   "version": "1.2",
   "authors": [
-    {
-      "name": "Supe",
-      "flags": {}
-    }
+    {"name": "Carlos Fernandez"},
+    {"name": "MasterTomNL"}
   ],
   "compatibility": {
     "minimum": "13",
